@@ -11,9 +11,7 @@ data class Book(
     @PrimaryKey val id: String,
     val title: String,
     val author: String,
-    val editionReleaseTimeYear: String,
+    val released_date: String,
     val stock: String,
-    val createdAt: String,
-    val updatedAt: String,
-    val bookRequestId: String // Foreign key ke BookRequest
+
 )

@@ -41,7 +41,7 @@ fun MainScreen(onExitClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "perpustakaan") },
+                title = { Text(text = "Perpustakaan") },
                 navigationIcon = {
                     if (currentRoute.value != NavScreen.Login.route) {
                         Image(
@@ -73,11 +73,11 @@ fun MainScreen(onExitClick: () -> Unit) {
         },
         bottomBar = {
             if (currentRoute.value != NavScreen.Login.route) {
-                BottomAppBar (
+                BottomAppBar(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
-                    Row (modifier = Modifier.fillMaxWidth(),
+                    Row(modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically) {
                         Image(
@@ -114,33 +114,67 @@ fun MainScreen(onExitClick: () -> Unit) {
 
             composable(NavScreen.Login.route) {
                 currentRoute.value = NavScreen.Login.route
-                LoginScreen(modifier = Modifier.padding(innerPadding)) {
-                    navController.navigate(NavScreen.Home.route)
-                }
+                LoginScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    onLoginClick = {
+                        navController.navigate(NavScreen.Home.route)
+                    },
+                    onRegisterClick = {
+                        navController.navigate(NavScreen.FormMembership.route)
+                    }
+                )
             }
+
             composable(NavScreen.Home.route) {
                 currentRoute.value = NavScreen.Home.route
                 HomeScreen(navController = navController, modifier = Modifier.padding(innerPadding)) {
                     navController.navigate(NavScreen.List.route)
                 }
             }
+
             composable(NavScreen.List.route) {
                 currentRoute.value = NavScreen.List.route
                 ListBookScreen(modifier = Modifier.padding(innerPadding)) { id ->
                     navController.navigate("${NavScreen.Edit.route}/$id")
                 }
             }
+
             composable(NavScreen.Add.route) {
                 currentRoute.value = NavScreen.Add.route
                 FormBookScreen(modifier = Modifier.padding(innerPadding))
             }
+
             composable(NavScreen.Edit.routeWithArgument,
-                arguments = listOf(navArgument(NavScreen.Edit.argument0) { type = NavType.StringType }))
-            { backStackEntry ->
+                arguments = listOf(navArgument(NavScreen.Edit.argument0) { type = NavType.StringType })) { backStackEntry ->
                 val id = backStackEntry.arguments?.getString(NavScreen.Edit.argument0) ?: return@composable
 
                 currentRoute.value = NavScreen.Edit.route
                 FormBookScreen(modifier = Modifier.padding(innerPadding), id = id)
+            }
+
+            composable(NavScreen.List.route) {
+                currentRoute.value = NavScreen.List.route
+                ListMembershipScreen(modifier = Modifier.padding(innerPadding)) { id ->
+                    navController.navigate("${NavScreen.EditMembership.route}/$id")
+                }
+            }
+
+            composable(NavScreen.AddMembership.route) {
+                currentRoute.value = NavScreen.AddMembership.route
+                FormMembership(modifier = Modifier.padding(innerPadding))
+            }
+
+            composable(NavScreen.EditMembership.routeWithArgument,
+                arguments = listOf(navArgument(NavScreen.EditMembership.argument0) { type = NavType.StringType })) { backStackEntry ->
+                val id = backStackEntry.arguments?.getString(NavScreen.EditMembership.argument0) ?: return@composable
+
+                currentRoute.value = NavScreen.EditMembership.route
+                FormMembership(modifier = Modifier.padding(innerPadding), id = id)
+            }
+
+            composable(NavScreen.FormMembership.route) {
+                currentRoute.value = NavScreen.FormMembership.route
+                FormMembership(modifier = Modifier.padding(innerPadding))
             }
         }
     }

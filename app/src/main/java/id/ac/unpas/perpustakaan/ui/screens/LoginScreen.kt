@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit) {
+fun LoginScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit,
+                onRegisterClick: () -> Unit) {
     val loginMessage = remember { mutableStateOf(TextFieldValue("")) }
     val username = remember { mutableStateOf(TextFieldValue("")) }
     val password = remember { mutableStateOf(TextFieldValue("")) }
@@ -55,11 +56,11 @@ fun LoginScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit) {
                 }
 
                 Button(modifier = Modifier.weight(5f), onClick = {
-                    username.value = TextFieldValue("")
-                    password.value = TextFieldValue("")
+                    onRegisterClick() // Panggil onRegisterClick saat tombol diklik
                 }) {
-                    Text(text = "Batal")
+                    Text(text = "Daftar")
                 }
+
             }
 
             if (loginMessage.value.text.isNotEmpty()) {

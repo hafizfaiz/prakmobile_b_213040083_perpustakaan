@@ -4,11 +4,10 @@ import androidx.room.PrimaryKey
 
 data class BookRequest(
     @PrimaryKey val id: Int,
-    val bookId: Int,
-    val memberId: Int,
-    val startDate: String,
-    val endDate: String,
-    val status: String,
-    val createdAt: String,
-    val updatedAt: String
+    val library_book_id: Int,
+    val library_member_id: Int,
+    val start_date: String,
+    val end_date: String,
+    val status: String
+
 )

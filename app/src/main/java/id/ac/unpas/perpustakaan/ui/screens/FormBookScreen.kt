@@ -33,11 +33,8 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
 
     val title = remember { mutableStateOf(TextFieldValue("")) }
     val author = remember { mutableStateOf(TextFieldValue("")) }
-    val editionReleaseTimeYear = remember { mutableStateOf(TextFieldValue("")) }
+    val released_date = remember { mutableStateOf(TextFieldValue("")) }
     val stock = remember { mutableStateOf(TextFieldValue("")) }
-    val createdAt = remember { mutableStateOf(TextFieldValue("")) }
-    val updatedAt = remember { mutableStateOf(TextFieldValue("")) }
-    val bookRequestId = remember { mutableStateOf(TextFieldValue("")) }
 
     Text(
         text = "Perpustakaan",
@@ -75,9 +72,9 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
             OutlinedTextField(
                 label = { Text(text = "editionReleaseTimeYear") },
                 modifier = Modifier.fillMaxWidth(),
-                value = editionReleaseTimeYear.value,
+                value = released_date.value,
                 onValueChange = {
-                    editionReleaseTimeYear.value = it
+                    released_date.value = it
                 }
             )
 
@@ -89,24 +86,17 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
                     stock.value = it
                 }
             )
-            OutlinedTextField(
-                label = { Text(text = "Tanggal Rilis") },
-                modifier = Modifier.fillMaxWidth(),
-                value = createdAt.value,
-                onValueChange = {
-                    createdAt.value = it
-                }
-            )
+
 
             Row {
                 Button(modifier = Modifier.weight(5f), onClick = {
                     if (id != null) {
                         scope.launch {
-                            viewModel.update(id, title.value.text, author.value.text, editionReleaseTimeYear.value.text, stock.value.text, createdAt.value.text, updatedAt.value.text, bookRequestId.value.text)
+                            viewModel.update(id, title.value.text, author.value.text, released_date.value.text, stock.value.text)
                         }
                     } else {
                         scope.launch {
-                            viewModel.insert(uuid4().toString(), title.value.text, author.value.text, editionReleaseTimeYear.value.text, stock.value.text, createdAt.value.text, updatedAt.value.text, bookRequestId.value.text)
+                            viewModel.insert(uuid4().toString(), title.value.text, author.value.text, released_date.value.text, stock.value.text)
                         }
                     }
                 }) {
@@ -116,7 +106,7 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
                     onClick = {
                         title.value = TextFieldValue("")
                         author.value = TextFieldValue("")
-                        editionReleaseTimeYear.value = TextFieldValue("")
+                        released_date.value = TextFieldValue("")
                         stock.value = TextFieldValue("")
                     }
                 ) {
@@ -131,10 +121,8 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
             if (it) {
                 title.value = TextFieldValue("")
                 author.value = TextFieldValue("")
-                editionReleaseTimeYear.value = TextFieldValue("")
+                released_date.value = TextFieldValue("")
                 stock.value = TextFieldValue("")
-                createdAt.value = TextFieldValue("")
-                updatedAt.value = TextFieldValue("")
             }
         }
 
@@ -150,9 +138,7 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
         viewModel.item.observe(LocalLifecycleOwner.current) {
             title.value = TextFieldValue(it.title)
             author.value = TextFieldValue(it.author)
-            editionReleaseTimeYear.value = TextFieldValue(it.editionReleaseTimeYear)
+            released_date.value = TextFieldValue(it.released_date)
             stock.value = TextFieldValue(it.stock)
-            createdAt.value = TextFieldValue(it.createdAt)
-            updatedAt.value = TextFieldValue(it.updatedAt)
         }
     }

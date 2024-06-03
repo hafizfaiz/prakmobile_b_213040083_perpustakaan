@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import id.ac.unpas.perpustakaan.persistences.AppDatabase
 import id.ac.unpas.perpustakaan.persistences.BookDao
+import id.ac.unpas.perpustakaan.persistences.MembershipDao
 import javax.inject.Singleton
 
 @Module
@@ -25,5 +26,11 @@ object PersistenceModule {
     @Singleton
     fun provideBookDao(appDatabase: AppDatabase) : BookDao {
         return appDatabase.bookDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMembershipDao(appDatabase: AppDatabase): MembershipDao {
+        return appDatabase.membershipDao()
     }
 }
