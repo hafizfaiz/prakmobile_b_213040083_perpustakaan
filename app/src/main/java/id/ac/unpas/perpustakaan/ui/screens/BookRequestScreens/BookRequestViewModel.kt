@@ -1,40 +1,39 @@
-package id.ac.unpas.perpustakaan.ui.screens
+package id.ac.unpas.perpustakaan.ui.screens.BookRequestScreens
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.ac.unpas.perpustakaan.base.LiveCoroutinesViewModel
-import id.ac.unpas.perpustakaan.models.Membership
-import id.ac.unpas.perpustakaan.repositories.MembershipRepository
+import id.ac.unpas.perpustakaan.models.BookRequest
+import id.ac.unpas.perpustakaan.repositories.BookRequestRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class MemberViewModel @Inject constructor(private val membershipRepository: MembershipRepository) : LiveCoroutinesViewModel() {
+class BookRequestViewModel @Inject constructor(private val bookRequestRepository: BookRequestRepository) : LiveCoroutinesViewModel() {
 
     private val _isDone: MutableLiveData<Boolean> = MutableLiveData(false)
-    val isDone: LiveData<Boolean> get() = _isDone
+    val isDone: LiveData<Boolean> = _isDone
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> get() = _isLoading
+    val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _item: MutableLiveData<Membership> = MutableLiveData()
-    val item: LiveData<Membership> get() = _item
+    private val _item: MutableLiveData<BookRequest> = MutableLiveData()
+    val item: LiveData<BookRequest> = _item
 
-    private val _membership: MutableLiveData<Boolean> = MutableLiveData(false)
-    val memberships: LiveData<List<Membership>> get() = _membership.switchMap {
+    private val _bookRequest: MutableLiveData<Boolean> = MutableLiveData(false)
+    val bookRequests: LiveData<List<BookRequest>> = _bookRequest.switchMap {
         _isLoading.postValue(true)
         launchOnViewModelScope {
-            membershipRepository.loadItems(
+            bookRequestRepository.loadItems(
                 onSuccess = {
                     _isLoading.postValue(false)
                 },
                 onError = {
                     _isLoading.postValue(false)
-                    Log.e("MemberViewModel", it)
+                    Log.e("BookViewModel", it)
                 }
             ).asLiveData()
         }
@@ -42,78 +41,70 @@ class MemberViewModel @Inject constructor(private val membershipRepository: Memb
 
     suspend fun insert(
         id: String,
-        name: String,
-        address: String,
-        phone: String
+        library_book_id: String,
+        library_member_id: String,
+        start_date: String,
+        end_date: String,
+        status: String,
     ) {
         _isLoading.postValue(true)
-        membershipRepository.insert(
-            Membership(id, name, address, phone),
+        bookRequestRepository.insert(BookRequest(id, library_book_id, library_member_id, start_date, end_date, status),
             onSuccess = {
                 _isLoading.postValue(false)
                 _isDone.postValue(true)
-                _membership.postValue(true)
+                _bookRequest.postValue(true)
             },
             onError = {
                 _isLoading.postValue(false)
                 _isDone.postValue(true)
-                _membership.postValue(true)
+                _bookRequest.postValue(true)
             }
         )
     }
 
     suspend fun update(
         id: String,
-        name: String,
-        address: String,
-        phone: String
+        library_book_id: String,
+        library_member_id: String,
+        start_date: String,
+        end_date: String,
+        status: String,
     ) {
         _isLoading.postValue(true)
-        membershipRepository.update(
-            Membership(id, name, address, phone),
+        bookRequestRepository.update(BookRequest(id, library_book_id, library_member_id, start_date, end_date, status),
             onSuccess = {
                 _isLoading.postValue(false)
                 _isDone.postValue(true)
-                _membership.postValue(true)
+                _bookRequest.postValue(true)
             },
             onError = {
                 _isLoading.postValue(false)
                 _isDone.postValue(true)
-                _membership.postValue(true)
+                _bookRequest.postValue(true)
             }
         )
     }
 
     suspend fun delete(id: String) {
         _isLoading.postValue(true)
-        membershipRepository.delete(id,
+        bookRequestRepository.delete(id,
             onSuccess = {
                 _isLoading.postValue(false)
                 _isDone.postValue(true)
-                _membership.postValue(true)
+                _bookRequest.postValue(true)
             },
             onError = {
                 _isLoading.postValue(false)
                 _isDone.postValue(true)
-                _membership.postValue(true)
+                _bookRequest.postValue(true)
             }
         )
     }
 
-    private val _id = MutableLiveData<String>()
-
-    init {
-        _id.switchMap { id ->
-            liveData {
-                val membership = membershipRepository.find(id)
-                emitSource(membership)
-            }
-        }.observeForever {
+    suspend fun find(id: String) {
+        val book = bookRequestRepository.find(id)
+        book?.let {
             _item.postValue(it)
         }
-    }
-
-    fun find(id: String) {
-        _id.postValue(id)
     }
 }

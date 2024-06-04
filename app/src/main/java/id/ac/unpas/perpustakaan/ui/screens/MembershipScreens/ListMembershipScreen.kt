@@ -1,4 +1,4 @@
-package id.ac.unpas.perpustakaan.ui.screens
+package id.ac.unpas.perpustakaan.ui.screens.MembershipScreens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

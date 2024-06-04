@@ -29,15 +29,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import id.ac.unpas.perpustakaan.R
+import id.ac.unpas.perpustakaan.ui.screens.BookRequestScreens.FormBookRequest
+import id.ac.unpas.perpustakaan.ui.screens.BookRequestScreens.ListBookRequestScreen
+import id.ac.unpas.perpustakaan.ui.screens.BookScreens.FormBookScreen
+import id.ac.unpas.perpustakaan.ui.screens.BookScreens.ListBookScreen
+import id.ac.unpas.perpustakaan.ui.screens.MembershipScreens.FormMembership
+import id.ac.unpas.perpustakaan.ui.screens.MembershipScreens.ListMembershipScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(onExitClick: () -> Unit) {
+fun MainScreen(onExitClick: () -> Unit){
     val navController = rememberNavController()
     val currentRoute = remember {
         mutableStateOf("")
     }
-    val isMembershipFormVisible = currentRoute.value == NavScreen.FormMembership.route
 
     Scaffold(
         topBar = {
@@ -48,13 +53,9 @@ fun MainScreen(onExitClick: () -> Unit) {
                         Image(
                             painterResource(id = R.drawable.baseline_home_24),
                             contentDescription = "Menu",
-                            colorFilter = ColorFilter.tint(Color.White),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
                             modifier = Modifier.clickable {
-                                if (currentRoute.value == NavScreen.FormMembership.route) {
-                                    navController.navigate(NavScreen.Login.route) // Navigasi ke halaman login saat form membership ditampilkan
-                                } else {
-                                    navController.navigate(NavScreen.Home.route)
-                                }
+                                navController.navigate(NavScreen.Home.route)
                             }
                         )
                     }
@@ -77,30 +78,33 @@ fun MainScreen(onExitClick: () -> Unit) {
             )
         },
         bottomBar = {
-            if (currentRoute.value != NavScreen.Login.route && !isMembershipFormVisible) {
-                BottomAppBar(
+            if (currentRoute.value != NavScreen.Login.route) {
+                BottomAppBar (
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
+                    Row (modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            painterResource(id = R.drawable.baseline_add_24),
-                            contentDescription = "Tambah",
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "Lihat Buku",
+                            color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.clickable {
-                                navController.navigate(NavScreen.Add.route)
+                                navController.navigate(NavScreen.ListBook.route)
                             }.weight(0.5f)
                         )
-                        Image(
-                            painterResource(id = R.drawable.baseline_remove_24),
-                            contentDescription = "Lihat",
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+                        Text(
+                            text = "Lihat Pinjam Buku",
+                            color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.clickable {
-                                navController.navigate(NavScreen.List.route)
+                                navController.navigate(NavScreen.ListBookRequest.route)
+                            }.weight(0.5f)
+                        )
+                        Text(
+                            text = "Lihat Membership",
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.clickable {
+                                navController.navigate(NavScreen.ListMembership.route)
                             }.weight(0.5f)
                         )
                     }
@@ -108,14 +112,6 @@ fun MainScreen(onExitClick: () -> Unit) {
             }
 
         },
-        floatingActionButton = {
-            if (currentRoute.value == NavScreen.Home.route) {
-                FloatingActionButton(onClick = { navController.navigate(NavScreen.Add.route) }) {
-                    Image(painterResource(id = R.drawable.baseline_add_24), contentDescription = "Add")
-                }
-            }
-        },
-        floatingActionButtonPosition = FabPosition.End
     ) { innerPadding ->
         NavHost(navController = navController, startDestination = NavScreen.Login.route) {
 
@@ -135,57 +131,13 @@ fun MainScreen(onExitClick: () -> Unit) {
             composable(NavScreen.Home.route) {
                 currentRoute.value = NavScreen.Home.route
                 HomeScreen(navController = navController, modifier = Modifier.padding(innerPadding)) {
-                    navController.navigate(NavScreen.List.route)
+                    navController.navigate(NavScreen.ListBook.route)
                 }
             }
 
-            composable(NavScreen.List.route) {
-                currentRoute.value = NavScreen.List.route
-                ListBookScreen(modifier = Modifier.padding(innerPadding)) { id ->
-                    navController.navigate("${NavScreen.Edit.route}/$id")
-                }
-            }
-            composable(NavScreen.List.route) {
-                currentRoute.value = NavScreen.List.route
-                ListMembershipScreen(modifier = Modifier.padding(innerPadding)) { id ->
-                    navController.navigate("${NavScreen.EditMembership.route}/$id")
-                }
-            }
-            composable(NavScreen.List.route) {
-                currentRoute.value = NavScreen.List.route
-                ListBookRequestScreen(modifier = Modifier.padding(innerPadding)) { id ->
-                    navController.navigate("${NavScreen.EditMembership.route}/$id")
-                }
-            }
-            composable(NavScreen.Add.route) {
-                currentRoute.value = NavScreen.Add.route
+            composable(NavScreen.AddBook.route) {
+                currentRoute.value = NavScreen.AddBook.route
                 FormBookScreen(modifier = Modifier.padding(innerPadding))
-            }
-
-            composable(NavScreen.Edit.routeWithArgument,
-                arguments = listOf(navArgument(NavScreen.Edit.argument0) { type = NavType.StringType })) { backStackEntry ->
-                val id = backStackEntry.arguments?.getString(NavScreen.Edit.argument0) ?: return@composable
-
-                currentRoute.value = NavScreen.Edit.route
-                FormBookScreen(modifier = Modifier.padding(innerPadding), id = id)
-            }
-
-            composable(NavScreen.AddMembership.route) {
-                currentRoute.value = NavScreen.AddMembership.route
-                FormBookRequest(modifier = Modifier.padding(innerPadding))
-            }
-
-            composable(NavScreen.EditMembership.routeWithArgument,
-                arguments = listOf(navArgument(NavScreen.EditMembership.argument0) { type = NavType.StringType })) { backStackEntry ->
-                val id = backStackEntry.arguments?.getString(NavScreen.EditMembership.argument0) ?: return@composable
-
-                currentRoute.value = NavScreen.EditMembership.route
-                FormBookRequest(modifier = Modifier.padding(innerPadding), id = id)
-            }
-
-            composable(NavScreen.FormMembership.route) {
-                currentRoute.value = NavScreen.FormMembership.route
-                FormBookRequest(modifier = Modifier.padding(innerPadding))
             }
 
             composable(NavScreen.AddMembership.route) {
@@ -193,18 +145,65 @@ fun MainScreen(onExitClick: () -> Unit) {
                 FormMembership(modifier = Modifier.padding(innerPadding))
             }
 
+            composable(NavScreen.AddBookRequest.route) {
+                currentRoute.value = NavScreen.AddBookRequest.route
+                FormBookRequest(modifier = Modifier.padding(innerPadding))
+            }
+
+            composable(NavScreen.ListBook.route) {
+                currentRoute.value = NavScreen.ListBook.route
+                ListBookScreen(modifier = Modifier.padding(innerPadding)) { id ->
+                    navController.navigate("${NavScreen.EditBook.route}/$id")
+                }
+            }
+            composable(NavScreen.ListBookRequest.route) {
+                currentRoute.value = NavScreen.ListBookRequest.route
+                ListBookRequestScreen(modifier = Modifier.padding(innerPadding)) { id ->
+                    navController.navigate("${NavScreen.EditBookRequest.route}/$id")
+                }
+            }
+
+            composable(NavScreen.ListMembership.route) {
+                currentRoute.value = NavScreen.ListMembership.route
+                ListMembershipScreen(modifier = Modifier.padding(innerPadding)) { id ->
+                    navController.navigate("${NavScreen.EditMembership.route}/$id")
+                }
+            }
+
+            composable(NavScreen.EditBook.routeWithArgument,
+                arguments = listOf(navArgument(NavScreen.EditBook.argument0) { type = NavType.StringType }))
+            { backStackEntry ->
+                val id = backStackEntry.arguments?.getString(NavScreen.EditBook.argument0) ?: return@composable
+
+                currentRoute.value = NavScreen.EditBook.route
+                FormBookScreen(modifier = Modifier.padding(innerPadding), id = id)
+            }
+
             composable(NavScreen.EditMembership.routeWithArgument,
-                arguments = listOf(navArgument(NavScreen.EditMembership.argument0) { type = NavType.StringType })) { backStackEntry ->
+                arguments = listOf(navArgument(NavScreen.EditMembership.argument0) { type = NavType.StringType }))
+            { backStackEntry ->
                 val id = backStackEntry.arguments?.getString(NavScreen.EditMembership.argument0) ?: return@composable
 
                 currentRoute.value = NavScreen.EditMembership.route
                 FormMembership(modifier = Modifier.padding(innerPadding), id = id)
             }
 
-            composable(NavScreen.FormMembership.route) {
-                currentRoute.value = NavScreen.FormMembership.route
-                FormMembership(modifier = Modifier.padding(innerPadding))
+            composable(NavScreen.EditBookRequest.routeWithArgument,
+                arguments = listOf(navArgument(NavScreen.EditBookRequest.argument0) { type = NavType.StringType }))
+            { backStackEntry ->
+                val id = backStackEntry.arguments?.getString(NavScreen.EditBookRequest.argument0) ?: return@composable
+
+                currentRoute.value = NavScreen.EditBookRequest.route
+                FormBookRequest(modifier = Modifier.padding(innerPadding), id = id)
             }
+
+//            composable(NavScreen.Login.route) {
+//                currentRoute.value = NavScreen.Login.route
+//                LoginScreen(modifier = Modifier.padding(innerPadding)) {
+//                    navController.navigate(NavScreen.Home.route)
+//                }
+//            }
         }
+
     }
 }

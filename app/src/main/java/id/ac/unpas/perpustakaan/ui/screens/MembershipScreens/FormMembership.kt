@@ -1,4 +1,4 @@
-package id.ac.unpas.perpustakaan.ui.screens
+package id.ac.unpas.perpustakaan.ui.screens.MembershipScreens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,19 +25,17 @@ import com.benasher44.uuid.uuid4
 import kotlinx.coroutines.launch
 
 @Composable
-fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
+fun FormMembership(modifier: Modifier = Modifier, id: String? = null) {
 
-    val viewModel = hiltViewModel<BookRequestViewModel>()
+    val viewModel = hiltViewModel<MemberViewModel>()
     val scope = rememberCoroutineScope()
 
-    val library_book_id = remember { mutableStateOf(TextFieldValue("")) }
-    val library_member_id = remember { mutableStateOf(TextFieldValue("")) }
-    val start_date = remember { mutableStateOf(TextFieldValue("")) }
-    val end_date = remember { mutableStateOf(TextFieldValue("")) }
-    val status = remember { mutableStateOf(TextFieldValue("")) }
+    val name = remember { mutableStateOf(TextFieldValue("")) }
+    val address = remember { mutableStateOf(TextFieldValue("")) }
+    val phone = remember { mutableStateOf(TextFieldValue("")) }
 
     Text(
-        text = "Form Book Request",
+        text = "Form Membership",
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp)
@@ -50,35 +48,27 @@ fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
             OutlinedTextField(
                 label = { Text(text = "Nama Member") },
                 modifier = Modifier.fillMaxWidth(),
-                value = library_book_id.value,
+                value = name.value,
                 onValueChange = {
-                    library_book_id.value = it
+                    name.value = it
                 }
             )
 
             OutlinedTextField(
                 label = { Text(text = "Alamat") },
                 modifier = Modifier.fillMaxWidth(),
-                value = library_member_id.value,
+                value = address.value,
                 onValueChange = {
-                    start_date.value = it
+                    address.value = it
                 }
             )
 
             OutlinedTextField(
                 label = { Text(text = "No Telephone") },
                 modifier = Modifier.fillMaxWidth(),
-                value = end_date.value,
+                value = phone.value,
                 onValueChange = {
-                    end_date.value = it
-                }
-            )
-            OutlinedTextField(
-                label = { Text(text = "No Telephone") },
-                modifier = Modifier.fillMaxWidth(),
-                value = status.value,
-                onValueChange = {
-                    status.value = it
+                    phone.value = it
                 }
             )
 
@@ -86,23 +76,20 @@ fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
                 Button(modifier = Modifier.weight(5f), onClick = {
                     if (id != null) {
                         scope.launch {
-                            viewModel.update(id, library_book_id.value.text, library_member_id.value.text, start_date.value.text, end_date.value.text, status.value.text)
+                            viewModel.update(id, name.value.text, address.value.text, phone.value.text)
                         }
                     } else {
                         scope.launch {
-                            viewModel.insert(uuid4().toString(), library_book_id.value.text, library_member_id.value.text, start_date.value.text, end_date.value.text, status.value.text)
+                            viewModel.insert(uuid4().toString(), name.value.text, address.value.text, phone.value.text)
                         }
                     }
                 }) {
                     Text(text = "Simpan")
                 }
                 Button(modifier = Modifier.weight(5f), onClick = {
-                    library_book_id.value = TextFieldValue("")
-                    library_member_id.value = TextFieldValue("")
-                    start_date.value = TextFieldValue("")
-                    end_date.value = TextFieldValue("")
-                    status.value = TextFieldValue("")
-
+                    name.value = TextFieldValue("")
+                    address.value = TextFieldValue("")
+                    phone.value = TextFieldValue("")
                 }) {
                     Text(text = "Batal")
                 }
@@ -112,11 +99,9 @@ fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
 
     viewModel.isDone.observe(LocalLifecycleOwner.current) {
         if (it) {
-            library_book_id.value = TextFieldValue("")
-            library_member_id.value = TextFieldValue("")
-            start_date.value = TextFieldValue("")
-            end_date.value = TextFieldValue("")
-            status.value = TextFieldValue("")
+            name.value = TextFieldValue("")
+            address.value = TextFieldValue("")
+            phone.value = TextFieldValue("")
         }
     }
 
@@ -126,11 +111,10 @@ fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
         }
     }
 
+
     viewModel.item.observe(LocalLifecycleOwner.current) {
-        library_book_id.value = TextFieldValue(it.library_book_id)
-        library_member_id.value = TextFieldValue(it.library_member_id)
-        start_date.value = TextFieldValue(it.start_date)
-        end_date.value = TextFieldValue(it.end_date)
-        status.value = TextFieldValue(it.status)
+        name.value = TextFieldValue(it.name)
+        address.value = TextFieldValue(it.address)
+        phone.value = TextFieldValue(it.phone)
     }
 }

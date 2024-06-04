@@ -1,29 +1,27 @@
 package id.ac.unpas.perpustakaan.ui.screens
 
-sealed class NavScreen(val route: String) {
+sealed class NavScreen (val route: String) {
     object Home : NavScreen("home")
-    object Add : NavScreen("add")
-    object Edit : NavScreen("edit") {
-        const val routeWithArgument: String = "edit/{id}"
-        const val argument0: String = "id"
-    }
     object List : NavScreen("list")
-    object Login : NavScreen("login")
-
     object FormMembership : NavScreen("form_membership")
-
-    object AddBookRequest : NavScreen("add_BookRequest")
-
-//    object EditBookRequest : NavScreen("edit_BookRequest") {
-//        const val routeWithArgument: String = "edit_BookRequest/{id}"
-//        const val argument0: String = "id"
-//    }
-    object ListBookRequest : NavScreen("BOOK_REQUEST")
-
-    object AddMembership : NavScreen("add_membership")
-
-    object EditMembership : NavScreen("edit_membership") {
-        const val routeWithArgument: String = "edit_membership/{id}"
-        const val argument0: String = "id"
+    object AddBook : NavScreen("addBook")
+    object AddBookRequest : NavScreen("addBookRequest")
+    object AddMembership : NavScreen("addMembership")
+    object EditBook : NavScreen("editBook") {
+        const val routeWithArgument: String = "editBook/{id}"
+        const val argument0 : String = "id"
     }
+    object EditBookRequest : NavScreen("editBookRequest") {
+        const val routeWithArgument: String = "editBookRequest/{id}"
+        const val argument0 : String = "id"
+    }
+
+    object EditMembership : NavScreen("editMembership") {
+        const val routeWithArgument: String = "editMembership/{id}"
+        const val argument0 : String = "id"
+    }
+    object ListBook : NavScreen("listBook")
+    object ListBookRequest : NavScreen("listBookRequest")
+    object ListMembership : NavScreen("listMembership")
+    object Login : NavScreen("login")
 }
