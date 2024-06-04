@@ -1,6 +1,6 @@
 package id.ac.unpas.perpustakaan.networks
 
-import androidx.lifecycle.LiveData
+
 import com.skydoves.sandwich.ApiResponse
 import id.ac.unpas.perpustakaan.models.Membership
 import id.ac.unpas.perpustakaan.networks.responses.MembershipDeleteResponse
@@ -15,21 +15,18 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface MembershipApi {
-    @GET("memberships")
+    @GET("member")
     suspend fun findAll(): ApiResponse<MembershipGetResponse>
 
-    @POST("memberships")
+    @POST("member")
     @Headers("Content-Type: application/json")
     suspend fun insert(@Body membership: Membership): ApiResponse<MembershipPostResponse>
 
-    @PUT("memberships/{id}")
+    @PUT("member/{id}")
     @Headers("Content-Type: application/json")
     suspend fun update(@Path("id") id: String, @Body membership: Membership): ApiResponse<MembershipPostResponse>
 
-    @DELETE("memberships/{id}")
+    @DELETE("member/{id}")
     suspend fun delete(@Path("id") id: String): ApiResponse<MembershipDeleteResponse>
 
-    fun getMembershipValue(membershipLiveData: LiveData<Membership>): Membership? {
-        return membershipLiveData.value
-    }
 }

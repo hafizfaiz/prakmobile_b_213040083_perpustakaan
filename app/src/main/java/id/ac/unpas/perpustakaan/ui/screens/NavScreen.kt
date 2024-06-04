@@ -12,6 +12,14 @@ sealed class NavScreen(val route: String) {
 
     object FormMembership : NavScreen("form_membership")
 
+    object AddBookRequest : NavScreen("add_BookRequest")
+
+    object EditBookRequest : NavScreen("edit_BookRequest") {
+        const val routeWithArgument: String = "edit_BookRequest/{id}"
+        const val argument0: String = "id"
+    }
+    object FormBookRequest : NavScreen("form_membership")
+
     object AddMembership : NavScreen("add_membership")
 
     object EditMembership : NavScreen("edit_membership") {

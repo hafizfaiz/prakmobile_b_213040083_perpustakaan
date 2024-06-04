@@ -24,12 +24,20 @@ object NetworkModule {
         return OkHttpClient.Builder().addInterceptor(RequestInterceptor()).build()
     }
 
+//    @Provides
+//    @Singleton
+//    fun provideRetrofit(): Retrofit {
+//        return Retrofit.Builder()
+//            .baseUrl("https://ppm-api.nimbus.biz.id/api/library/") // Pastikan base URL diakhiri dengan /
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//    }
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://ppm-api.nimbus.biz.id")
+            .baseUrl("https://ppm-api.nimbus.biz.id/api/library/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .build()

@@ -138,7 +138,18 @@ fun MainScreen(onExitClick: () -> Unit) {
                     navController.navigate("${NavScreen.Edit.route}/$id")
                 }
             }
-
+            composable(NavScreen.List.route) {
+                currentRoute.value = NavScreen.List.route
+                ListMembershipScreen(modifier = Modifier.padding(innerPadding)) { id ->
+                    navController.navigate("${NavScreen.EditMembership.route}/$id")
+                }
+            }
+            composable(NavScreen.List.route) {
+                currentRoute.value = NavScreen.List.route
+                ListBookRequestScreen(modifier = Modifier.padding(innerPadding)) { id ->
+                    navController.navigate("${NavScreen.EditMembership.route}/$id")
+                }
+            }
             composable(NavScreen.Add.route) {
                 currentRoute.value = NavScreen.Add.route
                 FormBookScreen(modifier = Modifier.padding(innerPadding))
@@ -152,11 +163,22 @@ fun MainScreen(onExitClick: () -> Unit) {
                 FormBookScreen(modifier = Modifier.padding(innerPadding), id = id)
             }
 
-            composable(NavScreen.List.route) {
-                currentRoute.value = NavScreen.List.route
-                ListMembershipScreen(modifier = Modifier.padding(innerPadding)) { id ->
-                    navController.navigate("${NavScreen.EditMembership.route}/$id")
-                }
+            composable(NavScreen.AddMembership.route) {
+                currentRoute.value = NavScreen.AddMembership.route
+                FormBookRequest(modifier = Modifier.padding(innerPadding))
+            }
+
+            composable(NavScreen.EditMembership.routeWithArgument,
+                arguments = listOf(navArgument(NavScreen.EditMembership.argument0) { type = NavType.StringType })) { backStackEntry ->
+                val id = backStackEntry.arguments?.getString(NavScreen.EditMembership.argument0) ?: return@composable
+
+                currentRoute.value = NavScreen.EditMembership.route
+                FormBookRequest(modifier = Modifier.padding(innerPadding), id = id)
+            }
+
+            composable(NavScreen.FormMembership.route) {
+                currentRoute.value = NavScreen.FormMembership.route
+                FormBookRequest(modifier = Modifier.padding(innerPadding))
             }
 
             composable(NavScreen.AddMembership.route) {

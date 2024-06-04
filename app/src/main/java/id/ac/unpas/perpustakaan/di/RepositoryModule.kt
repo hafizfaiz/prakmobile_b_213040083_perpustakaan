@@ -9,11 +9,11 @@ import id.ac.unpas.perpustakaan.networks.BookApi
 import id.ac.unpas.perpustakaan.networks.BookRequestApi
 import id.ac.unpas.perpustakaan.networks.MembershipApi
 import id.ac.unpas.perpustakaan.repositories.BookRepository
-import id.ac.unpas.perpustakaan.repositories.BookRequestRepository
 import id.ac.unpas.perpustakaan.repositories.MembershipRepository
 import id.ac.unpas.perpustakaan.persistences.BookDao
 import id.ac.unpas.perpustakaan.persistences.BookRequestDao
 import id.ac.unpas.perpustakaan.persistences.MembershipDao
+import id.ac.unpas.perpustakaan.repositories.BookRequestRepository
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -29,9 +29,9 @@ object RepositoryModule {
     fun provideMembershipRepository(membershipDao: MembershipDao, membershipApi: MembershipApi): MembershipRepository {
         return MembershipRepository(membershipApi, membershipDao)
     }
-//    @Provides
-//    @ViewModelScoped
-//    fun provideBookRequestRepository(bookRequestDao: BookRequestDao, bookRequestApi: BookRequestApi): BookRequestRepository {
-//        return BookRequestRepository(BookRequestApi, BookRequestDao)
-//    }
+    @Provides
+    @ViewModelScoped
+    fun provideBookRequestRepository(bookRequestDao: BookRequestDao, bookRequestApi: BookRequestApi): BookRequestRepository {
+        return BookRequestRepository(bookRequestApi, bookRequestDao)
+    }
 }

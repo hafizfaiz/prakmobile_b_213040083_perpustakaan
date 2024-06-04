@@ -3,7 +3,6 @@ package id.ac.unpas.perpustakaan.models
 import androidx.compose.runtime.Immutable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 
 @Entity
 @Immutable
