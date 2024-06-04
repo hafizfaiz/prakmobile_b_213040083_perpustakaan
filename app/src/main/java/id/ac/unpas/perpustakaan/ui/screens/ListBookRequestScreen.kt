@@ -23,7 +23,7 @@ fun ListBookRequestScreen(modifier: Modifier = Modifier, onClick: (String) -> Un
     val viewModel = hiltViewModel<BookRequestViewModel>()
 
     val list: List<BookRequest> by viewModel.bookRequests.observeAsState(listOf())
-    val title = remember { mutableStateOf("BOOK") }
+    val title = remember { mutableStateOf("BOOK_REQUEST") }
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(text = title.value, modifier = Modifier.fillMaxWidth())

@@ -14,11 +14,11 @@ sealed class NavScreen(val route: String) {
 
     object AddBookRequest : NavScreen("add_BookRequest")
 
-    object EditBookRequest : NavScreen("edit_BookRequest") {
-        const val routeWithArgument: String = "edit_BookRequest/{id}"
-        const val argument0: String = "id"
-    }
-    object FormBookRequest : NavScreen("form_membership")
+//    object EditBookRequest : NavScreen("edit_BookRequest") {
+//        const val routeWithArgument: String = "edit_BookRequest/{id}"
+//        const val argument0: String = "id"
+//    }
+    object ListBookRequest : NavScreen("BOOK_REQUEST")
 
     object AddMembership : NavScreen("add_membership")
 

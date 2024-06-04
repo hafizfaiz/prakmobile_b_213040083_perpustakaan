@@ -37,6 +37,7 @@ fun MainScreen(onExitClick: () -> Unit) {
     val currentRoute = remember {
         mutableStateOf("")
     }
+    val isMembershipFormVisible = currentRoute.value == NavScreen.FormMembership.route
 
     Scaffold(
         topBar = {
@@ -49,7 +50,11 @@ fun MainScreen(onExitClick: () -> Unit) {
                             contentDescription = "Menu",
                             colorFilter = ColorFilter.tint(Color.White),
                             modifier = Modifier.clickable {
-                                navController.navigate(NavScreen.Home.route)
+                                if (currentRoute.value == NavScreen.FormMembership.route) {
+                                    navController.navigate(NavScreen.Login.route) // Navigasi ke halaman login saat form membership ditampilkan
+                                } else {
+                                    navController.navigate(NavScreen.Home.route)
+                                }
                             }
                         )
                     }
@@ -72,14 +77,16 @@ fun MainScreen(onExitClick: () -> Unit) {
             )
         },
         bottomBar = {
-            if (currentRoute.value != NavScreen.Login.route) {
+            if (currentRoute.value != NavScreen.Login.route && !isMembershipFormVisible) {
                 BottomAppBar(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
-                    Row(modifier = Modifier.fillMaxWidth(),
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically) {
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Image(
                             painterResource(id = R.drawable.baseline_add_24),
                             contentDescription = "Tambah",
