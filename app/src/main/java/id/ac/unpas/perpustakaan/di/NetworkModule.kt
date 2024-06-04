@@ -8,6 +8,7 @@ import dagger.hilt.components.SingletonComponent
 import id.ac.unpas.agenda.networks.RequestInterceptor
 import id.ac.unpas.perpustakaan.networks.BookApi
 import id.ac.unpas.perpustakaan.networks.MembershipApi
+import id.ac.unpas.perpustakaan.networks.BookRequestApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,7 +29,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://docs.google.com/document/d/1zw8vUf0QsqsROt7IOLeVVnnwau68o3oyYGciZLvV9Do/edit?usp=sharing")
+            .baseUrl("https://ppm-api.nimbus.biz.id")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .build()
@@ -39,9 +40,16 @@ object NetworkModule {
     fun provideBookApi(retrofit: Retrofit): BookApi {
         return retrofit.create(BookApi::class.java)
     }
+
     @Provides
     @Singleton
     fun provideMembershipApi(retrofit: Retrofit): MembershipApi {
         return retrofit.create(MembershipApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookRequestApi(retrofit: Retrofit): BookRequestApi {
+        return retrofit.create(BookRequestApi::class.java)
     }
 }

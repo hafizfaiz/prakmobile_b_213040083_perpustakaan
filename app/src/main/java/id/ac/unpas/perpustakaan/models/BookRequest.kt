@@ -1,13 +1,17 @@
 package id.ac.unpas.perpustakaan.models
 
+import androidx.compose.runtime.Immutable
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
+@Entity
+@Immutable
 data class BookRequest(
-    @PrimaryKey val id: Int,
-    val library_book_id: Int,
-    val library_member_id: Int,
-    val start_date: String,
-    val end_date: String,
-    val status: String
+        @PrimaryKey val id: String,
+        val bookId: String,
+        val memberId: String,
+        val requestDate: Long
+    )
 
-)

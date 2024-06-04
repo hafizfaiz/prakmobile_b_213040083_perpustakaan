@@ -13,7 +13,6 @@ class RequestInterceptor : Interceptor {
             .build()
         Log.d("Request", request.toString())
         val response = chain.proceed(request)
-
         Log.d("Response", response.code.toString())
         return response
     }

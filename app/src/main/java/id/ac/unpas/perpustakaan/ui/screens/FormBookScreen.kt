@@ -61,7 +61,7 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
             )
 
             OutlinedTextField(
-                label = { Text(text = "Author") },
+                label = { Text(text = "Penulis") },
                 modifier = Modifier.fillMaxWidth(),
                 value = author.value,
                 onValueChange = {
@@ -70,7 +70,7 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
             )
 
             OutlinedTextField(
-                label = { Text(text = "editionReleaseTimeYear") },
+                label = { Text(text = "Tahun Rilis") },
                 modifier = Modifier.fillMaxWidth(),
                 value = released_date.value,
                 onValueChange = {
@@ -79,7 +79,7 @@ fun FormBookScreen(modifier: Modifier = Modifier, id : String? = null) {
             )
 
             OutlinedTextField(
-                label = { Text(text = "Jumlah stock") },
+                label = { Text(text = "Jumlah Stock") },
                 modifier = Modifier.fillMaxWidth(),
                 value = stock.value,
                 onValueChange = {

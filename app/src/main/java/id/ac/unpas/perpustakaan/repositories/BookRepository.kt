@@ -17,8 +17,7 @@ import javax.inject.Inject
 data class BookRepository @Inject constructor(private val api: BookApi, private val dao: BookDao) {
 
     @WorkerThread
-    fun loadItems(onSuccess: () -> Unit,
-                  onError: (String) -> Unit) = flow {
+    fun loadItems(onSuccess: () -> Unit, onError: (String) -> Unit) = flow {
         val list: List<Book> = dao.findAll()
         api.findAll()
             .suspendOnSuccess {
@@ -39,9 +38,7 @@ data class BookRepository @Inject constructor(private val api: BookApi, private 
             }
     }
 
-    suspend fun insert(book: Book,
-                       onSuccess: () -> Unit,
-                       onError: (String) -> Unit) {
+    suspend fun insert(book: Book, onSuccess: () -> Unit, onError: (String) -> Unit) {
         dao.upsert(book)
         api.insert(book)
             .suspendOnSuccess {

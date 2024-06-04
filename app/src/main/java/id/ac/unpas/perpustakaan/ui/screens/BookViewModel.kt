@@ -24,7 +24,7 @@ class BookViewModel @Inject constructor(private val bookRepository: BookReposito
     val item: LiveData<Book> = _item
 
     private val _book: MutableLiveData<Boolean> = MutableLiveData(false)
-    val books : LiveData<List<Book>> = _book.switchMap {
+    val books: LiveData<List<Book>> = _book.switchMap {
         _isLoading.postValue(true)
         launchOnViewModelScope {
             bookRepository.loadItems(

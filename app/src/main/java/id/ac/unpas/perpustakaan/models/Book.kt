@@ -12,6 +12,6 @@ data class Book(
     val title: String,
     val author: String,
     val released_date: String,
-    val stock: String,
+    val stock: String
 
 )
