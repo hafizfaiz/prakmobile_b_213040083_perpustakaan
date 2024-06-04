@@ -1,4 +1,4 @@
-package id.ac.unpas.perpustakaan.ui.screens
+package id.ac.unpas.perpustakaan.ui.screens.BookScreens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,24 +13,26 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
-import id.ac.unpas.perpustakaan.models.BookRequest
+import id.ac.unpas.perpustakaan.models.Book
+import id.ac.unpas.perpustakaan.ui.screens.BookScreens.BookItem
+import id.ac.unpas.perpustakaan.ui.screens.BookScreens.BookViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun ListBookRequestScreen(modifier: Modifier = Modifier, onClick: (String) -> Unit) {
+fun ListBookScreen(modifier: Modifier = Modifier, onClick: (String) -> Unit) {
 
     val scope = rememberCoroutineScope()
-    val viewModel = hiltViewModel<BookRequestViewModel>()
+    val viewModel = hiltViewModel<BookViewModel>()
 
-    val list: List<BookRequest> by viewModel.bookRequests.observeAsState(listOf())
-    val title = remember { mutableStateOf("BOOK_REQUEST") }
+    val list: List<Book> by viewModel.books.observeAsState(listOf())
+    val title = remember { mutableStateOf("BOOK") }
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(text = title.value, modifier = Modifier.fillMaxWidth())
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(list.size) { index ->
                 val item = list[index]
-                BookRequestItem(item = item, onEditClick = { id ->
+                BookItem(item = item, onEditClick = { id ->
                     onClick(id)
                 }, onDeleteClick = { id ->
                     scope.launch {
