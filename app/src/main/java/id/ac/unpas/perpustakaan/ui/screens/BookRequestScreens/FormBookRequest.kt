@@ -53,7 +53,7 @@ fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
             )
 
             OutlinedTextField(
-                label = { Text(text = "Tanggal dipinjam") },
+                label = { Text(text = "Tanggal Dipinjam") },
                 modifier = Modifier.fillMaxWidth(),
                 value = start_date.value,
                 onValueChange = {
