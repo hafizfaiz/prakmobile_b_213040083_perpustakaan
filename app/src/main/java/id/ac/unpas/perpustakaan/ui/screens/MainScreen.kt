@@ -86,26 +86,35 @@ fun MainScreen(onExitClick: () -> Unit){
                     Row (modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "Lihat Buku",
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.clickable {
-                                navController.navigate(NavScreen.ListBook.route)
-                            }.weight(0.5f)
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_book_24), // Gantilah dengan ID drawable Anda
+                            contentDescription = "Lihat Buku",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate(NavScreen.ListBook.route)
+                                }
+                                .weight(0.5f)
                         )
-                        Text(
-                            text = "Lihat Pinjam Buku",
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.clickable {
-                                navController.navigate(NavScreen.ListBookRequest.route)
-                            }.weight(0.5f)
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_collections_bookmark_24), // Gantilah dengan ID drawable Anda
+                            contentDescription = "Lihat buku pinjaman",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate(NavScreen.ListBookRequest.route)
+                                }
+                                .weight(0.5f)
                         )
-                        Text(
-                            text = "Lihat Membership",
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.clickable {
-                                navController.navigate(NavScreen.ListMembership.route)
-                            }.weight(0.5f)
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_diversity_1_24), // Gantilah dengan ID drawable Anda
+                            contentDescription = "Lihat membership",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate(NavScreen.ListMembership.route)
+                                }
+                                .weight(0.5f)
                         )
                     }
                 }
@@ -197,12 +206,6 @@ fun MainScreen(onExitClick: () -> Unit){
                 FormBookRequest(modifier = Modifier.padding(innerPadding), id = id)
             }
 
-//            composable(NavScreen.Login.route) {
-//                currentRoute.value = NavScreen.Login.route
-//                LoginScreen(modifier = Modifier.padding(innerPadding)) {
-//                    navController.navigate(NavScreen.Home.route)
-//                }
-//            }
         }
 
     }

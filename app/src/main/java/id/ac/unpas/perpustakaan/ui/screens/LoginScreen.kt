@@ -55,10 +55,12 @@ fun LoginScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit,
                     Text(text = "Login")
                 }
 
+
                 Button(modifier = Modifier.weight(5f), onClick = {
-                    onRegisterClick() // Panggil onRegisterClick saat tombol diklik
+                    username.value = TextFieldValue("")
+                    password.value = TextFieldValue("")
                 }) {
-                    Text(text = "Daftar")
+                    Text(text = "Batal")
                 }
 
             }

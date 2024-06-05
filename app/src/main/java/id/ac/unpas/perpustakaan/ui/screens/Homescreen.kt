@@ -22,19 +22,14 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier, onLi
             Text(text = "Tambah Buku")
         }
         Button(onClick = {
-            navController.navigate(NavScreen.AddBookRequest.route)
-        }, modifier = Modifier.fillMaxWidth()) {
-            Text(text = "Pinjam Buku")
-        }
-        Button(onClick = {
             navController.navigate(NavScreen.AddMembership.route)
         }, modifier = Modifier.fillMaxWidth()) {
             Text(text = "Tambah Membership")
         }
         Button(onClick = {
-            navController.navigate(NavScreen.ListBookRequest.route)
+            navController.navigate(NavScreen.AddBookRequest.route)
         }, modifier = Modifier.fillMaxWidth()) {
-            Text(text = "Lihat Pinjaman")
+            Text(text = "Tambah Data Pinjaman")
         }
     }
 }
