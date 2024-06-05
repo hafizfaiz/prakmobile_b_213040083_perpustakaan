@@ -16,7 +16,6 @@ import id.ac.unpas.perpustakaan.models.BookRequest
 fun BookRequestItem(item: BookRequest, onEditClick: (String) -> Unit, onDeleteClick: (String) -> Unit) {
     Row {
         Text(modifier = Modifier.weight(3f), text = item.library_book_id)
-        Text(modifier = Modifier.weight(3f), text = item.library_member_id)
         Text(modifier = Modifier.weight(3f), text = item.start_date)
         Text(modifier = Modifier.weight(3f), text = item.end_date)
         Text(modifier = Modifier.weight(3f), text = item.status)
