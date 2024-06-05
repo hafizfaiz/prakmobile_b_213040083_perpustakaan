@@ -4,14 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
@@ -36,6 +30,7 @@ fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
     val start_date = remember { mutableStateOf(TextFieldValue("")) }
     val end_date = remember { mutableStateOf(TextFieldValue("")) }
     val status = remember { mutableStateOf(TextFieldValue("")) }
+    var showDialog by remember { mutableStateOf(false) }
 
     Text(
         text = "Form Book Request",
@@ -85,6 +80,30 @@ fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
 
             Row {
                 Button(modifier = Modifier.weight(5f), onClick = {
+                    showDialog = true
+                }) {
+                    Text(text = "Simpan")
+                }
+                Button(modifier = Modifier.weight(5f), onClick = {
+                    library_book_id.value = TextFieldValue("")
+                    library_member_id.value = TextFieldValue("")
+                    start_date.value = TextFieldValue("")
+                    end_date.value = TextFieldValue("")
+                    status.value = TextFieldValue("")
+                }) {
+                    Text(text = "Batal")
+                }
+            }
+        }
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            text = { Text("Data Berhasil Disimpan!") },
+            confirmButton = {
+                Button(onClick = {
+                    showDialog = false
                     if (id != null) {
                         scope.launch {
                             viewModel.update(id, library_book_id.value.text, library_member_id.value.text, start_date.value.text, end_date.value.text, status.value.text)
@@ -95,20 +114,10 @@ fun FormBookRequest(modifier: Modifier = Modifier, id: String? = null) {
                         }
                     }
                 }) {
-                    Text(text = "Simpan")
-                }
-                Button(modifier = Modifier.weight(5f), onClick = {
-                    library_book_id.value = TextFieldValue("")
-                    library_member_id.value = TextFieldValue("")
-                    start_date.value = TextFieldValue("")
-                    end_date.value = TextFieldValue("")
-                    status.value = TextFieldValue("")
-
-                }) {
-                    Text(text = "Batal")
+                    Text("Ok")
                 }
             }
-        }
+        )
     }
 
     viewModel.isDone.observe(LocalLifecycleOwner.current) {

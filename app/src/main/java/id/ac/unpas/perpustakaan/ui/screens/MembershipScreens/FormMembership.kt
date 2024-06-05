@@ -1,17 +1,8 @@
 package id.ac.unpas.perpustakaan.ui.screens.MembershipScreens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
@@ -33,6 +24,7 @@ fun FormMembership(modifier: Modifier = Modifier, id: String? = null) {
     val name = remember { mutableStateOf(TextFieldValue("")) }
     val address = remember { mutableStateOf(TextFieldValue("")) }
     val phone = remember { mutableStateOf(TextFieldValue("")) }
+    var showDialog by remember { mutableStateOf(false) }
 
     Text(
         text = "Form Membership",
@@ -74,15 +66,7 @@ fun FormMembership(modifier: Modifier = Modifier, id: String? = null) {
 
             Row {
                 Button(modifier = Modifier.weight(5f), onClick = {
-                    if (id != null) {
-                        scope.launch {
-                            viewModel.update(id, name.value.text, address.value.text, phone.value.text)
-                        }
-                    } else {
-                        scope.launch {
-                            viewModel.insert(uuid4().toString(), name.value.text, address.value.text, phone.value.text)
-                        }
-                    }
+                    showDialog = true
                 }) {
                     Text(text = "Simpan")
                 }
@@ -95,6 +79,29 @@ fun FormMembership(modifier: Modifier = Modifier, id: String? = null) {
                 }
             }
         }
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            text = { Text(text = "Data Berhasil Disimpan!") },
+            confirmButton = {
+                Button(onClick = {
+                    if (id != null) {
+                        scope.launch {
+                            viewModel.update(id, name.value.text, address.value.text, phone.value.text)
+                        }
+                    } else {
+                        scope.launch {
+                            viewModel.insert(uuid4().toString(), name.value.text, address.value.text, phone.value.text)
+                        }
+                    }
+                    showDialog = false
+                }) {
+                    Text("Ok")
+                }
+            }
+        )
     }
 
     viewModel.isDone.observe(LocalLifecycleOwner.current) {
@@ -110,7 +117,6 @@ fun FormMembership(modifier: Modifier = Modifier, id: String? = null) {
             viewModel.find(id)
         }
     }
-
 
     viewModel.item.observe(LocalLifecycleOwner.current) {
         name.value = TextFieldValue(it.name)
