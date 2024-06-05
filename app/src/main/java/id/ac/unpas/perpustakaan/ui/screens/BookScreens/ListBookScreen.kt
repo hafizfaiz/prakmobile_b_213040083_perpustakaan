@@ -3,6 +3,8 @@ package id.ac.unpas.perpustakaan.ui.screens.BookScreens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +28,15 @@ fun ListBookScreen(modifier: Modifier = Modifier, onClick: (String) -> Unit) {
 
     val list: List<Book> by viewModel.books.observeAsState(listOf())
     val title = remember { mutableStateOf("BOOK") }
+    val openDialog = remember {
+        mutableStateOf(false)
+    }
+    val activeId = remember {
+        mutableStateOf("")
+    }
+    val deleting = remember {
+        mutableStateOf(false)
+    }
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(text = title.value, modifier = Modifier.fillMaxWidth())
@@ -35,12 +46,40 @@ fun ListBookScreen(modifier: Modifier = Modifier, onClick: (String) -> Unit) {
                 BookItem(item = item, onEditClick = { id ->
                     onClick(id)
                 }, onDeleteClick = { id ->
-                    scope.launch {
-                        viewModel.delete(id)
-                    }
+                    deleting.value = true
+                    activeId.value = id
+                    openDialog.value = true
                 })
             }
         }
+    }
+
+    if (openDialog.value) {
+        AlertDialog(onDismissRequest = {
+            openDialog.value = false },
+            title = {
+                Text(text = "Konfirmasi")
+            },
+            text = {
+                Text(text = "Apakah anda yakin ingin menghapus data ini?")
+            },
+            confirmButton = { Button(onClick = {
+                scope.launch {
+                    viewModel.delete(activeId.value)
+                }
+                openDialog.value = false
+            }) {
+                Text(text = "Ya")
+                }
+            },
+            dismissButton = {
+                Button(onClick = {
+                    openDialog.value = false
+                }) {
+                    Text(text = "Tidak")
+                }
+            }
+        )
     }
 
     viewModel.isLoading.observe(LocalLifecycleOwner.current) {
