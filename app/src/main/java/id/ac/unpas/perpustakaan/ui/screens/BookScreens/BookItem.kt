@@ -33,15 +33,15 @@ fun BookItem(item: Book, onEditClick: (String) -> Unit, onDeleteClick: (String) 
     ) {
         Row (modifier = Modifier.padding(7.dp), verticalAlignment = Alignment.CenterVertically){
             Image(
-                painter = painterResource(id = R.drawable.baseline_book2_24),
+                painter = painterResource(id = R.drawable.baseline_book_24),
                 contentDescription = null,
                 modifier = Modifier.size(100.dp)
             )
             Column(modifier = Modifier.weight(0.5f)) {
-                Text(text = "Nama Buku")
+                Text(text = "Buku")
                 Text(text = "Penulis")
-                Text(text = "Tahun Rilis")
-                Text(text = "Jumlah Stock")
+                Text(text = "Tahun")
+                Text(text = "Stock")
             }
             Column(modifier = Modifier.weight(0.1f)) {
                 Text(text = ":")
@@ -55,7 +55,7 @@ fun BookItem(item: Book, onEditClick: (String) -> Unit, onDeleteClick: (String) 
                 Text(text = item.released_date)
                 Text(text = item.stock)
             }
-            Row(
+            Column(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(start = 8.dp)
@@ -64,6 +64,7 @@ fun BookItem(item: Book, onEditClick: (String) -> Unit, onDeleteClick: (String) 
                     painterResource(id = R.drawable.baseline_edit_24),
                     "Edit",
                     modifier = Modifier
+                        .padding(8.dp)
                         .clickable {
                             onEditClick(item.id)
                         })
@@ -71,6 +72,7 @@ fun BookItem(item: Book, onEditClick: (String) -> Unit, onDeleteClick: (String) 
                     painterResource(id = R.drawable.baseline_delete_24),
                     "Delete",
                     modifier = Modifier
+                        .padding(8.dp)
                         .clickable {
                             onDeleteClick(item.id)
                         })
